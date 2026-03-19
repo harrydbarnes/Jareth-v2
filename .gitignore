@@ -1,0 +1,90 @@
+## .NET / Visual Studio / WinUI 3
+
+# Build results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+ARM/
+ARM64/
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+# Visual Studio
+.vs/
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+*.rsuser
+
+# User-specific files
+*.userprefs
+*.usertasks
+
+# MSBuild
+*.log
+
+# NuGet
+**/[Pp]ackages/*
+!**/[Pp]ackages/build/
+*.nupkg
+**/packages/repositories.config
+project.lock.json
+project.fragment.lock.json
+
+# Rider / JetBrains
+.idea/
+*.sln.iml
+
+# ReSharper
+_ReSharper*/
+*.[Rr]e[Ss]harper
+*.DotSettings.user
+
+# Windows
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Certificates (keep out of source control)
+*.pfx
+*.snk
+
+# App settings overrides
+AppSettings.local.json
+
+# MSIX packaging output
+Packages/
+output/
+AppPackages/
+BundleArtifacts/
+
+# WinUI generated files
+Generated Files/
+
+# Publish output
+publish/
+
+# Test results
+TestResults/
+*.trx
+
+# Code coverage
+coverage/
+*.coverage
+*.coveragexml
+
+# Misc
+*.tmp
+*.bak
+*.swp
+*~
