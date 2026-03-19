@@ -108,7 +108,7 @@ public static class GreetingHelper
             [0] = new() {
                 "Late night call. Respect. Let's go.",
                 "Midnight meeting? Jareth never sleeps either.",
-                "Late night mode. This one had better count.",
+                "Late night. Make this one count.",
                 "Late night session. Jareth is right here.",
                 "Night owl meeting. Jareth approves of this."
             },

@@ -4,7 +4,6 @@ using System.IO;
 using System.Threading;
 using System.Threading.Tasks;
 using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
 
 namespace Jareth.Core.Services;
 
@@ -13,8 +12,6 @@ public class AudioService : IAudioService
     private WaveFileWriter? _writer;
     private IWaveIn? _micCapture;
     private WasapiLoopbackCapture? _loopbackCapture;
-    private MixingSampleProvider? _mixer;
-    private WaveFileWriter? _mixWriter;
     private volatile bool _isRecording;
     private float _peakLevel;
     private readonly SemaphoreSlim _writeLock = new(1, 1);
