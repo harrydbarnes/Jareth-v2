@@ -1,0 +1,44 @@
+# Build outputs
+bin/
+obj/
+
+# Visual Studio
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Local settings
+AppSettings.local.json
+
+# Certificates
+*.pfx
+
+# Package output
+Packages/
+
+# macOS
+.DS_Store
+
+# NuGet
+*.nupkg
+*.snupkg
+.nuget/
+packages/
+
+# Rider
+.idea/
+
+# Test results
+TestResults/
+
+# Logs
+*.log
+
+# Publish profiles
+Properties/PublishProfiles/
+
+# Windows App Packaging
+AppPackages/
+BundleArtifacts/
