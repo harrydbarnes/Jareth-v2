@@ -28,7 +28,11 @@ public sealed partial class MainWindow : Window
         var appWindow = AppWindow.GetFromWindowId(windowId);
         appWindow.Resize(new SizeInt32(1280, 800));
 
-        _ = ViewModel.InitialiseAsync();
+        Loaded += async (_, _) =>
+        {
+            try { await ViewModel.InitialiseAsync(); }
+            catch (Exception ex) { System.Diagnostics.Debug.WriteLine($"Init failed: {ex}"); }
+        };
     }
 
     private void NewRecordingButton_Click(object sender, RoutedEventArgs e)

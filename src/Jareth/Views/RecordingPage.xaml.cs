@@ -25,8 +25,10 @@ public sealed partial class RecordingPage : Page
             await ViewModel.StartRecordingAsync();
     }
 
+    private const double PeakBarMaxWidth = 280.0;
+
     public double GetPeakBarWidth(float level)
-        => Math.Clamp(level, 0f, 1f) * 280.0;
+        => Math.Clamp(level, 0f, 1f) * PeakBarMaxWidth;
 
     public string GetRecordIcon(bool isRecording)
         => isRecording ? "\uE71A" : "\uE717";

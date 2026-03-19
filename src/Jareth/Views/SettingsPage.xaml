@@ -70,8 +70,8 @@
                         <StackPanel Spacing="6">
                             <TextBlock Text="Local Model Endpoint" FontSize="13"
                                        Foreground="{ThemeResource TextFillColorSecondaryBrush}"/>
-                            <PasswordBox Password="{x:Bind ViewModel.LocalModelEndpoint, Mode=TwoWay}"
-                                         PlaceholderText="http://localhost:11434" CornerRadius="8"/>
+                            <TextBox Text="{x:Bind ViewModel.LocalModelEndpoint, Mode=TwoWay}"
+                                     PlaceholderText="http://localhost:11434" CornerRadius="8"/>
                         </StackPanel>
                         <StackPanel Spacing="6">
                             <TextBlock Text="Whisper API Key (optional)" FontSize="13"
