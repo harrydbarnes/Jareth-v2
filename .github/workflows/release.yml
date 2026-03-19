@@ -22,9 +22,6 @@ jobs:
         with:
           dotnet-version: '8.0.x'
 
-      - name: Install Windows App SDK workload
-        run: dotnet workload install windows
-
       - name: Validate version tag matches project version
         shell: pwsh
         run: |
