@@ -35,7 +35,7 @@ public class StorageServiceTests : IDisposable
     }
 
     [Fact]
-    public async Task CreateMeetingFolder_HandlesduplicateNames()
+    public async Task CreateMeetingFolder_HandlesDuplicateNames()
     {
         var path1 = await _service.CreateMeetingFolderAsync("Duplicate");
         var path2 = await _service.CreateMeetingFolderAsync("Duplicate");

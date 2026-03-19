@@ -7,6 +7,9 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
       - name: Checkout repository
@@ -83,7 +86,7 @@ jobs:
               issue_number: context.issue.number,
               owner: context.repo.owner,
               repo: context.repo.repo,
-              body: '✅ **Build succeeded.** Download the installer from the [Actions artefacts tab](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).'
+              body: '✅ **Build succeeded.** Download the installer from the [Actions artifacts tab](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}).'
             })
 
       - name: Post PR comment on failure
