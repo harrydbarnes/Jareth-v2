@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<UserControl
+    x:Class="Jareth.Views.SettingsPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+
+    <ScrollViewer Padding="40,20">
+        <StackPanel Spacing="24" MaxWidth="600">
+
+            <TextBlock Text="Settings"
+                       FontSize="28"
+                       FontWeight="Bold"
+                       Margin="0,0,0,8" />
+
+            <!-- Audio Section -->
+            <StackPanel Spacing="12">
+                <TextBlock Text="Audio" FontSize="20" FontWeight="SemiBold" />
+
+                <ComboBox x:Name="MicrophoneSelector"
+                          Header="Microphone"
+                          PlaceholderText="Select Microphone"
+                          HorizontalAlignment="Stretch"
+                          CornerRadius="{StaticResource JarethCornerRadius}" />
+
+                <ComboBox x:Name="DefaultAudioSourceSelector"
+                          Header="Default Audio Source"
+                          HorizontalAlignment="Stretch"
+                          CornerRadius="{StaticResource JarethCornerRadius}">
+                    <ComboBoxItem Content="Mic Only" Tag="mic" />
+                    <ComboBoxItem Content="System Audio" Tag="system" />
+                    <ComboBoxItem Content="Both" Tag="both" />
+                </ComboBox>
+            </StackPanel>
+
+            <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+            <!-- API Keys Section -->
+            <StackPanel Spacing="12">
+                <TextBlock Text="API Keys" FontSize="20" FontWeight="SemiBold" />
+                <TextBlock Text="Keys are encrypted locally using Windows DPAPI."
+                           FontSize="12" Foreground="Gray" />
+
+                <PasswordBox x:Name="OpenAiKeyBox"
+                             Header="OpenAI API Key"
+                             PlaceholderText="sk-..."
+                             CornerRadius="{StaticResource JarethCornerRadius}" />
+
+                <PasswordBox x:Name="AnthropicKeyBox"
+                             Header="Anthropic API Key"
+                             PlaceholderText="sk-ant-..."
+                             CornerRadius="{StaticResource JarethCornerRadius}" />
+
+                <PasswordBox x:Name="GeminiKeyBox"
+                             Header="Google Gemini API Key"
+                             PlaceholderText="AI..."
+                             CornerRadius="{StaticResource JarethCornerRadius}" />
+
+                <TextBox x:Name="LocalModelEndpointBox"
+                         Header="Local Model Endpoint URL (optional)"
+                         PlaceholderText="http://localhost:11434"
+                         CornerRadius="{StaticResource JarethCornerRadius}" />
+
+                <PasswordBox x:Name="WhisperKeyBox"
+                             Header="Whisper API Key (optional)"
+                             PlaceholderText="sk-..."
+                             CornerRadius="{StaticResource JarethCornerRadius}" />
+            </StackPanel>
+
+            <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+            <!-- Appearance Section -->
+            <StackPanel Spacing="12">
+                <TextBlock Text="Appearance" FontSize="20" FontWeight="SemiBold" />
+
+                <ComboBox x:Name="ThemeSelector"
+                          Header="Theme"
+                          HorizontalAlignment="Stretch"
+                          CornerRadius="{StaticResource JarethCornerRadius}">
+                    <ComboBoxItem Content="Light" Tag="Light" />
+                    <ComboBoxItem Content="Dark" Tag="Dark" />
+                    <ComboBoxItem Content="System" Tag="System" IsSelected="True" />
+                </ComboBox>
+
+                <ComboBox x:Name="FontSelector"
+                          Header="Font"
+                          HorizontalAlignment="Stretch"
+                          CornerRadius="{StaticResource JarethCornerRadius}">
+                    <ComboBoxItem Content="Roboto" Tag="Roboto" IsSelected="True" />
+                    <ComboBoxItem Content="Roboto Slab" Tag="Roboto Slab" />
+                    <ComboBoxItem Content="Roboto Serif" Tag="Roboto Serif" />
+                </ComboBox>
+            </StackPanel>
+
+            <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+            <!-- Storage Section -->
+            <StackPanel Spacing="12">
+                <TextBlock Text="Storage" FontSize="20" FontWeight="SemiBold" />
+
+                <TextBlock x:Name="StoragePathText"
+                           FontSize="14"
+                           Foreground="Gray"
+                           IsTextSelectionEnabled="True" />
+
+                <Button Content="Open Folder"
+                        Click="OnOpenFolderClick"
+                        CornerRadius="{StaticResource JarethCornerRadius}" />
+            </StackPanel>
+
+            <Rectangle Height="1" Fill="{ThemeResource DividerStrokeColorDefaultBrush}" />
+
+            <!-- About Section -->
+            <StackPanel Spacing="8">
+                <TextBlock Text="About" FontSize="20" FontWeight="SemiBold" />
+                <TextBlock x:Name="VersionText" FontSize="14" Foreground="Gray" />
+                <HyperlinkButton Content="GitHub Repository"
+                                 NavigateUri="https://github.com/harrydbarnes/Jareth-v2" />
+            </StackPanel>
+
+            <!-- Save Button -->
+            <Button Content="Save Settings"
+                    Click="OnSaveSettingsClick"
+                    HorizontalAlignment="Right"
+                    Margin="0,16,0,40"
+                    Padding="24,12"
+                    CornerRadius="{StaticResource JarethCornerRadius}"
+                    Background="{StaticResource JarethAccentBrush}"
+                    Foreground="Black"
+                    FontWeight="SemiBold" />
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>
