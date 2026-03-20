@@ -1,5 +1,6 @@
 using Jareth.Core.Models;
 using Jareth.Core.Services;
+using Xunit;
 
 namespace Jareth.Tests;
 

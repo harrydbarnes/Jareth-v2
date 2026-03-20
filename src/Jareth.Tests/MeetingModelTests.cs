@@ -1,5 +1,6 @@
 using Jareth.Core.Models;
 using System.Text.Json;
+using Xunit;
 
 namespace Jareth.Tests;
 

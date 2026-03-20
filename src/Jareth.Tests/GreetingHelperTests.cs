@@ -1,4 +1,5 @@
 using Jareth.Core.Helpers;
+using Xunit;
 
 namespace Jareth.Tests;
 
