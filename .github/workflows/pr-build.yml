@@ -48,6 +48,7 @@ jobs:
         shell: pwsh
         run: |
           msbuild src/Jareth/Jareth.csproj `
+            /t:Publish `
             /p:Configuration=Release `
             /p:Platform=x64 `
             /p:RuntimeIdentifier=win-x64 `
@@ -57,6 +58,24 @@ jobs:
             /p:PackageCertificateThumbprint=$env:CERT_THUMBPRINT `
             /p:AppxPackageSigningEnabled=true `
             /restore
+
+      - name: List installer output directory
+        if: always()
+        shell: pwsh
+        run: |
+          Write-Host "=== output\installer contents ==="
+          if (Test-Path "${{ github.workspace }}\output\installer") {
+            Get-ChildItem -Path "${{ github.workspace }}\output\installer" -Recurse | Select-Object FullName
+          } else {
+            Write-Host "Directory does not exist: ${{ github.workspace }}\output\installer"
+          }
+          Write-Host "=== Default AppPackages output ==="
+          $defaultOut = "src\Jareth\bin\x64\Release\net8.0-windows10.0.19041.0\win-x64\AppPackages"
+          if (Test-Path $defaultOut) {
+            Get-ChildItem -Path $defaultOut -Recurse | Select-Object FullName
+          } else {
+            Write-Host "Directory does not exist: $defaultOut"
+          }
 
       - name: Upload MSIX artifact
         uses: actions/upload-artifact@v4
