@@ -3,7 +3,7 @@ using Jareth.Core.Models;
 
 namespace Jareth.Core.Services;
 
-public class DatabaseService : IDatabaseService
+public class DatabaseService : IDatabaseService, IDisposable
 {
     private readonly string _connectionString;
 
@@ -244,6 +244,11 @@ public class DatabaseService : IDatabaseService
             folderCommand.Parameters.AddWithValue("@CreatedAt", DateTime.Now.ToString("o"));
             await folderCommand.ExecuteNonQueryAsync();
         }
+    }
+
+    public void Dispose()
+    {
+        SqliteConnection.ClearAllPools();
     }
 
     private static Meeting ReadMeeting(SqliteDataReader reader)

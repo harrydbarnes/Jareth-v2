@@ -18,6 +18,8 @@ public class DatabaseServiceTests : IDisposable
 
     public void Dispose()
     {
+        _service.Dispose();
+
         if (Directory.Exists(_testDir))
             Directory.Delete(_testDir, recursive: true);
     }
