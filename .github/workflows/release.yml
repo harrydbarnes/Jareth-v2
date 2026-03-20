@@ -48,13 +48,16 @@ jobs:
         run: |
           $prodCert = "${{ secrets.PROD_CERT_PFX }}"
           if ($prodCert) {
-            $bytes = [Convert]::FromBase64String($prodCert)
-            [IO.File]::WriteAllBytes("${{ github.workspace }}\build-cert.pfx", $bytes)
-          } else {
             $certPassword = "${{ secrets.CERT_PASSWORD }}"
             if ([string]::IsNullOrEmpty($certPassword)) {
-              $certPassword = "JarethCI-TempPassword123!"
+              Write-Error "CERT_PASSWORD secret must be set when using PROD_CERT_PFX"
+              exit 1
             }
+            $bytes = [Convert]::FromBase64String($prodCert)
+            [IO.File]::WriteAllBytes("${{ github.workspace }}\build-cert.pfx", $bytes)
+            $securePassword = ConvertTo-SecureString -String $certPassword -Force -AsPlainText
+            $cert = Import-PfxCertificate -FilePath "${{ github.workspace }}\build-cert.pfx" -CertStoreLocation "Cert:\CurrentUser\My" -Password $securePassword
+          } else {
             $cert = New-SelfSignedCertificate `
               -Type Custom `
               -Subject "CN=JarethDev" `
@@ -62,9 +65,8 @@ jobs:
               -FriendlyName "Jareth Release Certificate" `
               -CertStoreLocation "Cert:\CurrentUser\My" `
               -TextExtension @("2.5.29.37={text}1.3.6.1.5.5.7.3.3", "2.5.29.19={text}")
-            $securePassword = ConvertTo-SecureString -String $certPassword -Force -AsPlainText
-            Export-PfxCertificate -Cert "Cert:\CurrentUser\My\$($cert.Thumbprint)" -FilePath "${{ github.workspace }}\build-cert.pfx" -Password $securePassword
           }
+          echo "CERT_THUMBPRINT=$($cert.Thumbprint)" >> $env:GITHUB_ENV
 
       - name: Setup MSBuild
         uses: microsoft/setup-msbuild@v2
@@ -72,25 +74,20 @@ jobs:
       - name: Build MSIX installer
         shell: pwsh
         run: |
-          $certPassword = "${{ secrets.CERT_PASSWORD }}"
-          if ([string]::IsNullOrEmpty($certPassword)) {
-            $certPassword = "JarethCI-TempPassword123!"
-          }
           msbuild src/Jareth/Jareth.csproj `
             /p:Configuration=Release `
             /p:Platform=x64 `
-            /p:AppxPackageDir=${{ github.workspace }}/output/installer/ `
+            /p:AppxPackageDir="${{ github.workspace }}\output\installer\" `
             /p:UapAppxPackageBuildMode=SideloadOnly `
             /p:AppxBundle=Never `
-            /p:PackageCertificateKeyFile=${{ github.workspace }}/build-cert.pfx `
-            /p:PackageCertificatePassword=$certPassword `
+            /p:PackageCertificateThumbprint=$env:CERT_THUMBPRINT `
             /p:AppxPackageSigningEnabled=true `
             /restore
 
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ./output/installer/**/*.msix
+          files: ${{ github.workspace }}\output\installer\**\*.msix
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
