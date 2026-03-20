@@ -77,10 +77,10 @@ jobs:
           msbuild src/Jareth/Jareth.csproj `
             /p:Configuration=Release `
             /p:Platform=x64 `
+            /p:RuntimeIdentifier=win-x64 `
             /p:AppxPackageDir="${{ github.workspace }}\output\installer\" `
             /p:UapAppxPackageBuildMode=SideloadOnly `
             /p:AppxBundle=Never `
-            /p:GeneratePackageOnBuild=true `
             /p:PackageCertificateThumbprint=$env:CERT_THUMBPRINT `
             /p:AppxPackageSigningEnabled=true `
             /restore
