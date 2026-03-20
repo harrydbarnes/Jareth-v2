@@ -80,6 +80,7 @@ jobs:
             /p:AppxPackageDir="${{ github.workspace }}\output\installer\" `
             /p:UapAppxPackageBuildMode=SideloadOnly `
             /p:AppxBundle=Never `
+            /p:GeneratePackageOnBuild=true `
             /p:PackageCertificateThumbprint=$env:CERT_THUMBPRINT `
             /p:AppxPackageSigningEnabled=true `
             /restore
