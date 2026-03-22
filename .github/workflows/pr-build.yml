@@ -77,11 +77,30 @@ jobs:
             Write-Host "Directory does not exist: $defaultOut"
           }
 
+      - name: Find MSIX output
+        id: find_msix
+        shell: pwsh
+        run: |
+          $searchDirs = @(
+            "${{ github.workspace }}\output\installer",
+            "${{ github.workspace }}\src\Jareth\bin"
+          )
+          $msix = $searchDirs |
+            Where-Object { Test-Path $_ } |
+            ForEach-Object { Get-ChildItem -Path $_ -Recurse -Include *.msix,*.msixbundle } |
+            Sort-Object LastWriteTime -Descending |
+            Select-Object -First 1
+          if (-not $msix) {
+            throw "No .msix/.msixbundle found in output\installer or src\Jareth\bin directories."
+          }
+          "msix_path=$($msix.FullName)" | Out-File -FilePath $env:GITHUB_OUTPUT -Append
+          Write-Host "Found package: $($msix.FullName)"
+
       - name: Upload MSIX artifact
         uses: actions/upload-artifact@v4
         with:
           name: Jareth-PR-${{ github.event.pull_request.number }}-installer
-          path: ${{ github.workspace }}\output\installer\**\*.msix
+          path: ${{ steps.find_msix.outputs.msix_path }}
           if-no-files-found: error
           retention-days: 7
 
