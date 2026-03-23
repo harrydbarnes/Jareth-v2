@@ -47,11 +47,11 @@
   </Applications>
 
   <Capabilities>
-    <rescap:Capability Name="runFullTrust" />
-    <DeviceCapability Name="microphone" />
-    <uap3:Capability Name="backgroundMediaRecording" />
-    <Capability Name="privateNetworkClientServer" />
     <Capability Name="internetClient" />
+    <Capability Name="privateNetworkClientServer" />
+    <rescap:Capability Name="runFullTrust" />
+    <uap3:Capability Name="backgroundMediaRecording" />
+    <DeviceCapability Name="microphone" />
   </Capabilities>
 
 </Package>
