@@ -75,10 +75,11 @@ jobs:
         shell: pwsh
         run: |
           msbuild src/Jareth/Jareth.csproj `
-            /t:Publish `
+            /t:Build `
             /p:Configuration=Release `
             /p:Platform=x64 `
             /p:RuntimeIdentifier=win-x64 `
+            /p:GenerateAppxPackageOnBuild=true `
             /p:AppxPackageDir="${{ github.workspace }}\output\installer\" `
             /p:UapAppxPackageBuildMode=SideloadOnly `
             /p:AppxBundle=Never `
