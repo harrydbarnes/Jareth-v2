@@ -43,6 +43,23 @@ jobs:
       - name: Run unit tests
         run: dotnet test src/Jareth.Tests/Jareth.Tests.csproj --configuration Release --no-build --verbosity normal
 
+      - name: Build Unpackaged (portable EXE)
+        shell: pwsh
+        run: |
+          dotnet publish src/Jareth/Jareth.csproj `
+            --configuration Unpackaged `
+            -p:RuntimeIdentifier=win-x64 `
+            --self-contained true `
+            -o "${{ github.workspace }}\output\portable"
+
+      - name: Zip portable EXE
+        shell: pwsh
+        run: |
+          Compress-Archive `
+            -Path "${{ github.workspace }}\output\portable\*" `
+            -DestinationPath "${{ github.workspace }}\output\Jareth-portable-win-x64.zip"
+          Write-Host "Created: ${{ github.workspace }}\output\Jareth-portable-win-x64.zip"
+
       - name: Generate signing certificate
         shell: pwsh
         run: |
@@ -127,7 +144,9 @@ jobs:
       - name: Create GitHub Release
         uses: softprops/action-gh-release@v2
         with:
-          files: ${{ steps.find_msix.outputs.msix_path }}
+          files: |
+            ${{ steps.find_msix.outputs.msix_path }}
+            ${{ github.workspace }}\output\Jareth-portable-win-x64.zip
           generate_release_notes: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

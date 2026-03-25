@@ -29,6 +29,23 @@ jobs:
       - name: Run unit tests
         run: dotnet test src/Jareth.Tests/Jareth.Tests.csproj --configuration Release --no-build --verbosity normal
 
+      - name: Build Unpackaged (portable EXE)
+        shell: pwsh
+        run: |
+          dotnet publish src/Jareth/Jareth.csproj `
+            --configuration Unpackaged `
+            -p:RuntimeIdentifier=win-x64 `
+            --self-contained true `
+            -o "${{ github.workspace }}\output\portable"
+
+      - name: Upload portable EXE artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: Jareth-PR-${{ github.event.pull_request.number }}-portable
+          path: ${{ github.workspace }}\output\portable\**
+          if-no-files-found: error
+          retention-days: 7
+
       - name: Generate self-signed certificate
         shell: pwsh
         run: |
