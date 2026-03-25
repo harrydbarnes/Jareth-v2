@@ -24,6 +24,13 @@
     <AppxBundle>Never</AppxBundle>
   </PropertyGroup>
 
+  <!-- Unpackaged configuration: run directly from the build output folder, no MSIX/installer needed -->
+  <PropertyGroup Condition="'$(Configuration)' == 'Unpackaged'">
+    <WindowsPackageType>None</WindowsPackageType>
+    <EnableMsixTooling>false</EnableMsixTooling>
+    <WindowsAppSDKSelfContained>true</WindowsAppSDKSelfContained>
+  </PropertyGroup>
+
   <ItemGroup>
     <PackageReference Include="CommunityToolkit.Mvvm" Version="8.2.2" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.1" />

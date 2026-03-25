@@ -19,20 +19,20 @@ if (-not $CertPath) {
     $CertPath = Get-ChildItem -Path $certDir -Filter "*.cer" | Select-Object -First 1 -ExpandProperty FullName
 }
 
-# Install certificate to Trusted People store (requires elevation)
+# Install certificate to Trusted People store (CurrentUser — no elevation required)
 if ($CertPath -and (Test-Path $CertPath)) {
     Write-Host "Installing certificate from $CertPath..."
     try {
         $cert = New-Object System.Security.Cryptography.X509Certificates.X509Certificate2($CertPath)
-        $store = New-Object System.Security.Cryptography.X509Certificates.X509Store("TrustedPeople", "LocalMachine")
+        $store = New-Object System.Security.Cryptography.X509Certificates.X509Store("TrustedPeople", "CurrentUser")
         $store.Open("ReadWrite")
         $store.Add($cert)
         $store.Close()
         Write-Host "Certificate installed successfully."
     }
     catch {
-        Write-Warning "Could not install certificate. You may need to run this script as Administrator."
-        Write-Warning "Alternatively, enable Developer Mode in Windows Settings > Privacy & Security > For developers."
+        Write-Warning "Could not install certificate: $_"
+        Write-Warning "Enable Developer Mode in Windows Settings > Privacy & Security > For developers and retry."
     }
 }
 

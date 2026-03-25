@@ -110,6 +110,39 @@ The script installs the bundled certificate into the Trusted People store and th
 
 Alternatively, double-click the `.msix` file directly if the signing certificate is already trusted.
 
+## Portable / Unpackaged Execution
+
+If you cannot install software (e.g., on a managed work laptop without administrator rights), you can run Jareth directly from the build output folder — no MSIX, no certificate, no elevated permissions required.
+
+### Build unpackaged
+
+```powershell
+dotnet build src/Jareth/Jareth.csproj `
+    --configuration Unpackaged `
+    -p:RuntimeIdentifier=win-x64 `
+    --self-contained true
+```
+
+The output is written to `src/Jareth/bin/Unpackaged/net8.0-windows10.0.19041.0/win-x64/`. Run `Jareth.exe` directly from that folder.
+
+### What the Unpackaged configuration does
+
+| Property | Value | Effect |
+|----------|-------|--------|
+| `WindowsPackageType` | `None` | No MSIX packaging; app runs as a plain `.exe` |
+| `EnableMsixTooling` | `false` | Disables MSIX-specific MSBuild targets |
+| `WindowsAppSDKSelfContained` | `true` | Windows App SDK binaries are copied next to the `.exe` |
+
+> **Note:** The unpackaged build does not have an identity and therefore cannot use packaged-only Windows APIs (e.g., `Windows.Storage.ApplicationData`). Jareth stores all data in `%LOCALAPPDATA%\Jareth` in both packaged and unpackaged modes, so functionality is identical.
+
+### Install the certificate without admin rights (MSIX sideload only)
+
+If you do want to use the MSIX installer on a machine where you have no admin rights but _do_ have Developer Mode enabled, `scripts/Install.ps1` now writes the self-signed certificate to `CurrentUser\TrustedPeople` instead of `LocalMachine\TrustedPeople`, which requires no elevation:
+
+```powershell
+.\scripts\Install.ps1 -MsixPath .\Jareth.msix
+```
+
 ## Audio Permissions
 
 Jareth captures audio from your microphone and/or system audio. On first launch, Windows will prompt for microphone access — you must allow it for recording to work. System audio capture (loopback) does not require additional permissions.
