@@ -34,15 +34,15 @@
 
   <!--
     Windows App SDK 1.5 runs GenerateAppManifestFromAppx (in Microsoft.WindowsAppSDK.SelfContained.targets)
-    during the Build phase, regardless of EnableMsixTooling. It reads MsixContent\AppxManifest.xml from the
-    intermediate output directory. For the Unpackaged config (EnableMsixTooling=false), this file is never
-    staged by MSIX tooling, so the task fails with DirectoryNotFoundException.
-    Fix: pre-stage Package.appxmanifest as MsixContent\AppxManifest.xml before Build starts.
-    BeforeTargets="Build;Publish" covers both normal publish (Build runs first) and no-build scenarios.
+    regardless of EnableMsixTooling. It reads MsixContent\AppxManifest.xml from the intermediate output
+    directory. For the Unpackaged config (EnableMsixTooling=false), this file is never staged by MSIX
+    tooling, so the task fails with DirectoryNotFoundException.
+    Fix: use BeforeTargets="GenerateAppManifestFromAppx" to hook directly before the failing task.
+    RuntimeIdentifier condition removed as it may not be evaluated at target scheduling time.
   -->
   <Target Name="StageAppxManifestForUnpackagedPublish"
-          BeforeTargets="Build;Publish"
-          Condition="'$(Configuration)' == 'Unpackaged' and '$(RuntimeIdentifier)' != ''">
+          BeforeTargets="GenerateAppManifestFromAppx"
+          Condition="'$(Configuration)' == 'Unpackaged'">
     <MakeDir Directories="$(IntermediateOutputPath)MsixContent" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\Package.appxmanifest"
           DestinationFiles="$(IntermediateOutputPath)MsixContent\AppxManifest.xml"
