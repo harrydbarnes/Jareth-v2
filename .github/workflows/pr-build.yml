@@ -70,7 +70,7 @@ jobs:
             /p:Platform=x64 `
             /p:RuntimeIdentifier=win-x64 `
             /p:GenerateAppxPackageOnBuild=true `
-            /p:AppxPackageDir="${{ github.workspace }}\output\installer\" `
+            /p:AppxPackageDir="${{ github.workspace }}\output\installer" `
             /p:UapAppxPackageBuildMode=SideloadOnly `
             /p:AppxBundle=Never `
             /p:PackageCertificateThumbprint=$env:CERT_THUMBPRINT `

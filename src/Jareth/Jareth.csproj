@@ -42,10 +42,10 @@
   -->
   <Target Name="StageAppxManifestForUnpackagedPublish"
           BeforeTargets="GenerateAppManifestFromAppx"
-          Condition="'$(Configuration)' == 'Unpackaged'">
-    <MakeDir Directories="$(IntermediateOutputPath)MsixContent" />
+          Condition="'$(WindowsPackageType)' == 'None'">
+    <MakeDir Directories="$(IntermediateOutputPath)\MsixContent" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\Package.appxmanifest"
-          DestinationFiles="$(IntermediateOutputPath)MsixContent\AppxManifest.xml"
+          DestinationFiles="$(IntermediateOutputPath)\MsixContent\AppxManifest.xml"
           OverwriteReadOnlyFiles="true" />
   </Target>
 
