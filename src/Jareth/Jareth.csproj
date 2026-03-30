@@ -47,10 +47,15 @@
       <_StageManifestIntermediateOutputPath Condition="$([System.IO.Path]::IsPathRooted('$(IntermediateOutputPath)'))">$(IntermediateOutputPath)</_StageManifestIntermediateOutputPath>
       <_StageManifestIntermediateOutputPath Condition="'$(_StageManifestIntermediateOutputPath)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\$(IntermediateOutputPath)'))</_StageManifestIntermediateOutputPath>
       <_StageManifestMsixContentDir>$([System.IO.Path]::GetFullPath('$(_StageManifestIntermediateOutputPath)\MsixContent'))</_StageManifestMsixContentDir>
+      <_StageManifestRidMsixContentDir Condition="'$(RuntimeIdentifier)' != ''">$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\$(BaseIntermediateOutputPath)$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\MsixContent'))</_StageManifestRidMsixContentDir>
     </PropertyGroup>
-    <MakeDir Directories="$(_StageManifestMsixContentDir)" />
+    <MakeDir Directories="$(_StageManifestMsixContentDir);$(_StageManifestRidMsixContentDir)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\Package.appxmanifest"
           DestinationFiles="$(_StageManifestMsixContentDir)\AppxManifest.xml"
+          OverwriteReadOnlyFiles="true" />
+    <Copy Condition="'$(_StageManifestRidMsixContentDir)' != ''"
+          SourceFiles="$(MSBuildProjectDirectory)\Package.appxmanifest"
+          DestinationFiles="$(_StageManifestRidMsixContentDir)\AppxManifest.xml"
           OverwriteReadOnlyFiles="true" />
   </Target>
 
