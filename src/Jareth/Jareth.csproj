@@ -43,9 +43,14 @@
   <Target Name="StageAppxManifestForUnpackagedPublish"
           BeforeTargets="GenerateAppManifestFromAppx"
           Condition="'$(WindowsPackageType)' == 'None'">
-    <MakeDir Directories="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)\MsixContent" />
+    <PropertyGroup>
+      <_StageManifestIntermediateOutputPath Condition="$([System.IO.Path]::IsPathRooted('$(IntermediateOutputPath)'))">$(IntermediateOutputPath)</_StageManifestIntermediateOutputPath>
+      <_StageManifestIntermediateOutputPath Condition="'$(_StageManifestIntermediateOutputPath)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\$(IntermediateOutputPath)'))</_StageManifestIntermediateOutputPath>
+      <_StageManifestMsixContentDir>$([System.IO.Path]::GetFullPath('$(_StageManifestIntermediateOutputPath)\MsixContent'))</_StageManifestMsixContentDir>
+    </PropertyGroup>
+    <MakeDir Directories="$(_StageManifestMsixContentDir)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\Package.appxmanifest"
-          DestinationFiles="$(MSBuildProjectDirectory)\$(IntermediateOutputPath)\MsixContent\AppxManifest.xml"
+          DestinationFiles="$(_StageManifestMsixContentDir)\AppxManifest.xml"
           OverwriteReadOnlyFiles="true" />
   </Target>
 
