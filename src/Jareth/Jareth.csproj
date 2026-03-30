@@ -49,7 +49,9 @@
       <_StageManifestMsixContentDir>$([System.IO.Path]::GetFullPath('$(_StageManifestIntermediateOutputPath)\MsixContent'))</_StageManifestMsixContentDir>
       <_StageManifestRidMsixContentDir Condition="'$(RuntimeIdentifier)' != ''">$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\$(BaseIntermediateOutputPath)$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\MsixContent'))</_StageManifestRidMsixContentDir>
     </PropertyGroup>
-    <MakeDir Directories="$(_StageManifestMsixContentDir);$(_StageManifestRidMsixContentDir)" />
+    <MakeDir Directories="$(_StageManifestMsixContentDir)" />
+    <MakeDir Condition="'$(_StageManifestRidMsixContentDir)' != ''"
+             Directories="$(_StageManifestRidMsixContentDir)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\Package.appxmanifest"
           DestinationFiles="$(_StageManifestMsixContentDir)\AppxManifest.xml"
           OverwriteReadOnlyFiles="true" />
