@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Application
+    x:Class="Jareth.App"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:local="using:Jareth">
+    <Application.Resources>
+        <ResourceDictionary>
+            <ResourceDictionary.MergedDictionaries>
+                <XamlControlsResources xmlns="using:Microsoft.UI.Xaml.Controls" />
+            </ResourceDictionary.MergedDictionaries>
+
+            <!-- Primary accent colour: Brat lime green -->
+            <Color x:Key="JarethAccentColor">#8ACE00</Color>
+            <SolidColorBrush x:Key="JarethAccentBrush" Color="{StaticResource JarethAccentColor}" />
+
+            <!-- Corner radius for cards and panels -->
+            <CornerRadius x:Key="JarethCornerRadius">12</CornerRadius>
+
+        </ResourceDictionary>
+    </Application.Resources>
+</Application>
