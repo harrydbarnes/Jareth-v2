@@ -63,7 +63,7 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\Package.appxmanifest"
           DestinationFiles="$(_StageManifestMsixContentDir)\AppxManifest.xml"
           OverwriteReadOnlyFiles="true" />
-    <Copy Condition="'@(_StageManifestRidMsixContentDir->Count())' != '0'"
+    <Copy Condition="@(_StageManifestRidMsixContentDir->Count()) &gt; 0"
           SourceFiles="$(MSBuildProjectDirectory)\Package.appxmanifest"
           DestinationFiles="%(_StageManifestRidMsixContentDir.Identity)\AppxManifest.xml"
           OverwriteReadOnlyFiles="true" />
