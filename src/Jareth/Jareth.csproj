@@ -64,8 +64,9 @@
     <Copy SourceFiles="$(MSBuildProjectDirectory)\Package.appxmanifest"
           DestinationFiles="$(_StageManifestMsixContentDir)\AppxManifest.xml"
           OverwriteReadOnlyFiles="true" />
-    <Copy SourceFiles="@(_StageManifestRidMsixContentDir->'$(MSBuildProjectDirectory)\\Package.appxmanifest')"
-          DestinationFiles="@(_StageManifestRidMsixContentDir->'%(Identity)\\AppxManifest.xml')"
+    <Copy Condition="'@(_StageManifestRidMsixContentDir)' != ''"
+          SourceFiles="$(MSBuildProjectDirectory)/Package.appxmanifest"
+          DestinationFiles="%(_StageManifestRidMsixContentDir.Identity)/AppxManifest.xml"
           OverwriteReadOnlyFiles="true" />
   </Target>
 
