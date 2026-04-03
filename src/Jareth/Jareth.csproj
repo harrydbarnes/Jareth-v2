@@ -50,8 +50,7 @@
     </PropertyGroup>
     <ItemGroup>
       <_StageManifestRid Include="$(RuntimeIdentifier)" Condition="'$(RuntimeIdentifier)' != ''" />
-      <_StageManifestRid Include="$([System.String]::Copy('$(RuntimeIdentifiers)').Split(';'))" Condition="'$(RuntimeIdentifiers)' != ''" />
-      <_StageManifestRid Remove="@(_StageManifestRid)" Condition="'%(_StageManifestRid.Identity)' == ''" />
+      <_StageManifestRid Include="$(RuntimeIdentifiers.Split(';'))" Condition="'$(RuntimeIdentifiers)' != ''" />
     </ItemGroup>
     <RemoveDuplicates Inputs="@(_StageManifestRid)">
       <Output TaskParameter="Filtered" ItemName="_StageManifestRidUnique" />
