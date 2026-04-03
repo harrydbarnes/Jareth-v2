@@ -47,17 +47,25 @@
       <_StageManifestIntermediateOutputPath Condition="$([System.IO.Path]::IsPathRooted('$(IntermediateOutputPath)'))">$(IntermediateOutputPath)</_StageManifestIntermediateOutputPath>
       <_StageManifestIntermediateOutputPath Condition="'$(_StageManifestIntermediateOutputPath)' == ''">$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\$(IntermediateOutputPath)'))</_StageManifestIntermediateOutputPath>
       <_StageManifestMsixContentDir>$([System.IO.Path]::GetFullPath('$(_StageManifestIntermediateOutputPath)\MsixContent'))</_StageManifestMsixContentDir>
-      <_StageManifestRidMsixContentDir Condition="'$(RuntimeIdentifier)' != ''">$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\$(BaseIntermediateOutputPath)$(Configuration)\$(TargetFramework)\$(RuntimeIdentifier)\MsixContent'))</_StageManifestRidMsixContentDir>
     </PropertyGroup>
+    <ItemGroup>
+      <_StageManifestRid Include="$(RuntimeIdentifier)" Condition="'$(RuntimeIdentifier)' != ''" />
+      <_StageManifestRid Include="$([System.String]::Copy('$(RuntimeIdentifiers)').Split(';'))" Condition="'$(RuntimeIdentifiers)' != ''" />
+      <_StageManifestRid Remove="@(_StageManifestRid)" Condition="'%(_StageManifestRid.Identity)' == ''" />
+    </ItemGroup>
+    <RemoveDuplicates Inputs="@(_StageManifestRid)">
+      <Output TaskParameter="Filtered" ItemName="_StageManifestRidUnique" />
+    </RemoveDuplicates>
+    <ItemGroup>
+      <_StageManifestRidMsixContentDir Include="$([System.IO.Path]::GetFullPath('$(MSBuildProjectDirectory)\$(BaseIntermediateOutputPath)$(Configuration)\$(TargetFramework)\%(_StageManifestRidUnique.Identity)\MsixContent'))" />
+    </ItemGroup>
     <MakeDir Directories="$(_StageManifestMsixContentDir)" />
-    <MakeDir Condition="'$(_StageManifestRidMsixContentDir)' != ''"
-             Directories="$(_StageManifestRidMsixContentDir)" />
+    <MakeDir Directories="@(_StageManifestRidMsixContentDir)" />
     <Copy SourceFiles="$(MSBuildProjectDirectory)\Package.appxmanifest"
           DestinationFiles="$(_StageManifestMsixContentDir)\AppxManifest.xml"
           OverwriteReadOnlyFiles="true" />
-    <Copy Condition="'$(_StageManifestRidMsixContentDir)' != ''"
-          SourceFiles="$(MSBuildProjectDirectory)\Package.appxmanifest"
-          DestinationFiles="$(_StageManifestRidMsixContentDir)\AppxManifest.xml"
+    <Copy SourceFiles="@(_StageManifestRidMsixContentDir->'$(MSBuildProjectDirectory)\\Package.appxmanifest')"
+          DestinationFiles="@(_StageManifestRidMsixContentDir->'%(Identity)\\AppxManifest.xml')"
           OverwriteReadOnlyFiles="true" />
   </Target>
 
